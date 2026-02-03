@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Love Reading ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #764ba2;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .crystal-ball {
+            width: 150px;
+            height: 150px;
+            margin: 30px auto;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #764ba2);
+            border-radius: 50%;
+            box-shadow: 0 10px 40px rgba(118, 75, 162, 0.5);
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-weight: bold;
+            color: #764ba2;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        .hearts {
+            text-align: center;
+            font-size: 2em;
+            margin: 20px 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .loading {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .loading-dots {
+            font-size: 2em;
+            color: #764ba2;
+        }
+
+        .loading-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .reveal {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .final-message {
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+
+        .date-highlight {
+            color: #ffd89b;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #764ba2;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-top: 15px;
+            font-family: 'Georgia', serif;
+        }
+
+        .progress {
+            text-align: center;
+            color: #764ba2;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- Screen 1: Welcome -->
+        <div class="screen active" id="screen1">
+            <h1>✨ Cosmic Love Reading ✨</h1>
+            <div class="crystal-ball">🔮</div>
+            <p>Welcome, dear seeker...</p>
+            <p>The stars have been whispering your name. They say you're searching for answers about your heart's true desire.</p>
+            <p>Are you ready to discover what the universe has revealed about your soulmate?</p>
+            <button onclick="nextScreen(2)">Yes, reveal my destiny! 💫</button>
+        </div>
+
+        <!-- Screen 2: Question 1 -->
+        <div class="screen" id="screen2">
+            <div class="progress">Question 1 of 5</div>
+            <h1>🌙 The Moon Asks...</h1>
+            <p class="question">When your heart feels most at peace, what do you see?</p>
+            <div class="options">
+                <button onclick="answer(1, 'A')" class="answer-btn">Someone who makes me laugh until my cheeks hurt 😄</button>
+                <button onclick="answer(1, 'B')" class="answer-btn">A companion who understands my silence as much as my words 🤫</button>
+                <button onclick="answer(1, 'C')" class="answer-btn">A partner who turns ordinary moments into adventures ✨</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Question 2 -->
+        <div class="screen" id="screen3">
+            <div class="progress">Question 2 of 5</div>
+            <h1>⭐ The Stars Wonder...</h1>
+            <p class="question">What kind of love story does your soul crave?</p>
+            <div class="options">
+                <button onclick="answer(2, 'A')" class="answer-btn">One that began as friendship and bloomed into forever 🌱</button>
+                <button onclick="answer(2, 'B')" class="answer-btn">A tale of two souls who just *knew* 💕</button>
+                <button onclick="answer(2, 'C')" class="answer-btn">A journey that grows deeper with each passing day 🌊</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Question 3 -->
+        <div class="screen" id="screen4">
+            <div class="progress">Question 3 of 5</div>
+            <h1>🌟 Venus Inquires...</h1>
+            <p class="question">What makes your heart skip a beat?</p>
+            <div class="options">
+                <button onclick="answer(3, 'A')" class="answer-btn">Thoughtful surprises that show they really *know* me 🎁</button>
+                <button onclick="answer(3, 'B')" class="answer-btn">The way they look at me like I'm their whole world 👁️</button>
+                <button onclick="answer(3, 'C')" class="answer-btn">Inside jokes and memories only we share 🤭</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Question 4 -->
+        <div class="screen" id="screen5">
+            <div class="progress">Question 4 of 5</div>
+            <h1>💫 Mercury Queries...</h1>
+            <p class="question">In a perfect relationship, communication feels like...</p>
+            <div class="options">
+                <button onclick="answer(4, 'A')" class="answer-btn">Never running out of things to talk about 💬</button>
+                <button onclick="answer(4, 'B')" class="answer-btn">Being comfortable in silence together 🤐</button>
+                <button onclick="answer(4, 'C')" class="answer-btn">Understanding each other without words 🫶</button>
+            </div>
+        </div>
+
+        <!-- Screen 6: Question 5 -->
+        <div class="screen" id="screen6">
+            <div class="progress">Question 5 of 5</div>
+            <h1>❤️ The Universe Asks...</h1>
+            <p class="question">When you think about forever, what matters most?</p>
+            <div class="options">
+                <button onclick="answer(5, 'A')" class="answer-btn">Growing together through all of life's seasons 🍂</button>
+                <button onclick="answer(5, 'B')" class="answer-btn">Finding home in each other's arms 🏡</button>
+                <button onclick="answer(5, 'C')" class="answer-btn">Building a beautiful life story together 📖</button>
+            </div>
+        </div>
+
+        <!-- Screen 7: Loading -->
+        <div class="screen" id="screen7">
+            <h1>🔮 Consulting the Cosmos...</h1>
+            <div class="crystal-ball">✨</div>
+            <div class="loading">
+                <div class="loading-dots">Analyzing your answers</div>
+            </div>
+            <p>The planets are aligning...</p>
+            <p>Your stars are revealing a name...</p>
+        </div>
+
+        <!-- Screen 8: The Revelation -->
+        <div class="screen" id="screen8">
+            <h1>💝 The Cosmos Has Spoken! 💝</h1>
+            <div class="hearts">💕 💖 💗 💓 💕</div>
+            <p>After consulting the stars, the moon, and all the celestial bodies in the universe...</p>
+            <p>After analyzing your deepest desires and your heart's truest wishes...</p>
+            <div class="reveal">
+                <p style="font-size: 2em; margin: 20px 0;">The answer is crystal clear:</p>
+                <p style="font-size: 2.5em; font-weight: bold; margin: 20px 0;">ISHWAR 💫</p>
+            </div>
+            <p class="final-message">
+                The universe knew it from the moment our paths crossed in <span class="date-highlight">July 2023</span>.<br><br>
+                Every star aligned, every constellation agreed...<br><br>
+                And now, as we approach <span class="date-highlight">February 6th, 2026</span>, the cosmos is ready to celebrate what it always knew would be.<br><br>
+            </p>
+            <button onclick="nextScreen(9)">But wait... there's more! ✨</button>
+        </div>
+
+        <!-- Screen 9: The Proposal -->
+        <div class="screen" id="screen9">
+            <h1>💍 One Last Cosmic Question... 💍</h1>
+            <div class="crystal-ball">💝</div>
+            <p style="font-size: 1.3em; color: #764ba2; font-weight: bold;">
+                The stars have aligned.<br>
+                The universe has spoken.<br>
+                Our journey began in July 2023.<br><br>
+                Now, as we stand on the threshold of February 6th, 2026...<br><br>
+            </p>
+            <p style="font-size: 1.5em; color: #764ba2; font-weight: bold; margin: 30px 0;">
+                Will you marry me? 💕
+            </p>
+            <div class="options">
+                <button onclick="sayYes()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 1.3em; padding: 20px;">
+                    YES! A thousand times YES! 💍
+                </button>
+                <button onclick="tryAgain()" style="background: #999; font-size: 0.9em;">
+                    Let me consult the stars again... 🔮
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 10: Final -->
+        <div class="screen" id="screen10">
+            <h1>🎉 Forever Begins Now! 🎉</h1>
+            <div class="hearts">💕 💖 💗 💘 💝 💖 💕</div>
+            <p style="font-size: 1.4em; line-height: 2;">
+                The cosmos celebrates!<br>
+                The stars dance!<br>
+                The universe rejoices!<br><br>
+                <span style="color: #764ba2; font-weight: bold; font-size: 1.2em;">
+                    You said YES! 💍✨
+                </span>
+            </p>
+            <div class="reveal">
+                <p class="final-message">
+                    From July 2023 to February 6th, 2026, and for all the forevers after...<br><br>
+                    I love you more than all the stars in the sky! 🌟<br><br>
+                    - Your Ishwar 💕
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        let answers = {};
+
+        function nextScreen(screenNum) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + screenNum).classList.add('active');
+            
+            // Auto-advance from loading screen
+            if (screenNum === 7) {
+                setTimeout(() => nextScreen(8), 3000);
+            }
+        }
+
+        function answer(questionNum, choice) {
+            answers[questionNum] = choice;
+            nextScreen(questionNum + 2);
+        }
+
+        function sayYes() {
+            nextScreen(10);
+            // Confetti effect
+            for (let i = 0; i < 50; i++) {
+                createHeart();
+            }
+        }
+
+        function tryAgain() {
+            alert("The stars insist... Ishwar is definitely the one! Try again? 😉");
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💕';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = '-50px';
+            heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+            heart.style.zIndex = '9999';
+            heart.style.pointerEvents = 'none';
+            document.body.appendChild(heart);
+            
+            let pos = -50;
+            const fall = setInterval(() => {
+                pos += 3;
+                heart.style.top = pos + 'px';
+                heart.style.opacity = 1 - (pos / window.innerHeight);
+                
+                if (pos > window.innerHeight) {
+                    clearInterval(fall);
+                    heart.remove();
+                }
+            }, 20);
+        }
+    </script>
+</body>
+</html>
